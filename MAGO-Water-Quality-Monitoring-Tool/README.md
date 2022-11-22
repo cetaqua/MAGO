@@ -1,6 +1,3 @@
-# **Evaluate and visualize**
-
-? como hacerlo??? 
 
 # **General description**
 MAGO Water Quality Monitoring tool is a code to estimates water quality parameters in lakes, reservoir or large ponds from Sentinel-2 images. The user can visualize water quality parameters (chlorophyll-a, cyanotoxins, turbidity...) on the EO Browser map  and get the corresponding time series at selected points or areas.
@@ -76,9 +73,9 @@ if (NDWI < -0) { // If NDWI is lower than 0 is not water, so return  true color
   imgVals = [...TrueColor, samples.dataMask];
 ```
 
-#### Filter by clouds
+#### Filter by clouds and other elements
 
-The purpose is to be able to make a subsequent filtering by removing the pixels containing clouds. This is achieved by the following function that use the SCL results:
+The purpose is to be able to make a subsequent filtering by removing the pixels containing clouds and other elements, like snow. This is achieved by the following function that use the SCL results:
 
 ```
 function isCloud(scl)
@@ -89,7 +86,7 @@ function isCloud(scl)
         <p align="center">
                 <img src="docs/img/Description_2_codes.png" width="250">
         </p>
-<span dir="">Based on this classification, the function will evaluate every pixel and return true for labels 1, 3, 8, 9, 10 and 11.</span> <span dir="">This will allo</span>w images with a high percentage of pixels considered as cloudy to be disregarded in the time series plot display.
+<span dir="">Based on this classification, the function will evaluate every pixel and return true for labels 1, 3, 8, 9, 10 and 11.</span> <span dir="">This will allo</span>w images with a high percentage of pixels considered as cloudy or defective to be disregarded in the time series plot display.
         <p align="center">
                 <img src="docs/img/Description_3_filtering.png" width="900">
         </p>
