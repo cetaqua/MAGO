@@ -1,6 +1,6 @@
 
 # **General description**
-MAGO Water Quality Monitoring tool is a code to estimates water quality parameters in lakes, reservoir or large ponds from Sentinel-2 images. The user can visualize water quality parameters (chlorophyll-a, cyanotoxins, turbidity...) on the EO Browser map  and get the corresponding time series at selected points or areas.
+MAGO Water Quality Monitoring tool is a code to estimates water quality parameters in lakes, reservoir or large ponds from Sentinel-2 images. The user can visualize water quality parameters (chlorophyll-a, cyanotoxins, turbidity...) on the EO Browser map  and get the corresponding time series at selected points or areas. You can have more information and access the EO Browser at this link: https://www.sentinel-hub.com/explore/eobrowser/
 
 ## Visuals
 The following is the display that can be obtained for concentration of Chrlorophyll-a for the day 2022-01-30 at Barrage Lebna (Tunisia)
