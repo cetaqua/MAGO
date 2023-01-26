@@ -104,7 +104,7 @@ The MAGO water quality monitoring tool aims at integrating different water quali
         <p align="center">
                 <img src="docs/img/Description_4_index.png" width="1000">
         </p>
- [^1] For Index with ID Number 3 formula is not correct. The correct formula would be equal to "1000 x 115530.31 x ((B03xB04)/B02)^2.38" so in that case units are cells/mL.
+For Index with ID Number 3 the formula shown in the table is not correct. The correct formula would be equal to "1000 x 115530.31 x ((B03xB04)/B02)^2.38" so in that case units are cells/mL.
 
 The MAGO Water Quality Monitoring Tool was focused on chlorophyll-a and cyanobacteria analysis, as well as some physicochemical parameters were included. A brief explanation of the algorithms selected is the following:
 
