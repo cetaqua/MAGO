@@ -48,7 +48,7 @@ function evaluatePixel(samples) {
   let index2 = ((-2.4792*Math.log10(Math.max(samples.B01,samples.B02)/samples.B03))-0.0389)
   let viz2 = colorBlend(index2, scaleLimits, colorScale);
   // indexNumber = 3 | Cyanobacteria (phycocyanin) cells/mL (Potes et al. 2018)
-  let index3 = 115530.31 * Math.pow((samples.B03 * samples.B04) / samples.B02, 2.38);          
+  let index3 = 1000 * 115530.31 * Math.pow((samples.B03 * samples.B04) / samples.B02, 2.38);          
   let viz3 = colorBlend(index3, scaleLimits, colorScale);
   // indexNumber = 4 | Cyanobacteria (Phycocyanin) mg/m3 (Soria-Perpinyà 2021)
   let index4 = 21.554 * Math.pow((samples.B05/samples.B04), 3.47941);        
