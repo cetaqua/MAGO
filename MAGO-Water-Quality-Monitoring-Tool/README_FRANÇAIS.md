@@ -161,6 +161,6 @@ Ce projet fait partie du programme PRIMA soutenu par l'Union Européenne
 
 ## Licence
 Ce travail est sous licence CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0/
-Si nécessaire, veuillez citer comme « Outil de surveillance de la qualité de l'eau MAGO, code ouvert pour le navigateur EO développé dans le cadre du projet PRIMA MAGO par CETAQUA »
+Si nécessaire, veuillez citer comme « Outil de surveillance de la qualité de l'eau MAGO, code ouvert pour le Sentinel EO Browser, développé dans le cadre du projet PRIMA MAGO par CETAQUA »
 
 
