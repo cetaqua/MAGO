@@ -103,11 +103,12 @@ L'outil de surveillance de la qualité de l'eau MAGO vise à intégrer différen
         <p align="center">
                 <img src="docs/img/Description_4_index.png" width="1000">
         </p>
-Pour l'index avec le numéro d'identification 3, la formule indiquée dans le tableau n'est pas correcte. La formule correcte serait égale à "1000 x 115530.31 x ((B03xB04)/B02)^2.38" donc dans ce cas les unités sont des cellules/mL.
+Remarque!: Pour l'index avec le numéro d'identification 3, la formule indiquée dans le tableau n'est pas correcte. La formule correcte serait égale à "1000 x 115530.31 x ((B03xB04)/B02)^2.38" donc dans ce cas les unités sont des cellules/mL.
 
 L'outil de surveillance de la qualité de l'eau MAGO était axé sur l'analyse de la chlorophylle-a et des cyanobactéries, ainsi que sur certains paramètres physicochimiques. Une brève explication des algorithmes sélectionnés est la suivante :
-
-<détails>
+      
+        
+<details>
 <summary>Chlorophylle-a</summary>
 Pour la mesure de ce paramètre dans l'outil MAGO, nous avons sélectionné trois formules différentes.
 
@@ -117,12 +118,12 @@ Pour la mesure de ce paramètre dans l'outil MAGO, nous avons sélectionné troi
 
 **De faibles valeurs de chlorophylle-a également optimisées par Soria-Perpinyà 2021** ont été appliquées dans les eaux intérieures méditerranéennes avec de faibles concentrations de Chl-a qui peuvent être plus difficiles à détecter, elles sont donc applicables dans les situations où de faibles concentrations de Chl -a sont attendus.
 
-</détails>
+</details>
 
-<détails>
+<details>
 <summary>Paramètres physicochimiques</summary>
  Trois paramètres physicochimiques ont été inclus dans l'outil de surveillance de la qualité de l'eau MAGO, tels que la turbidité, la matière organique dissoute colorée (cDOM) et le total des solides en suspension (TSS). Ces paramètres ont été sélectionnés car ils sont parmi les plus pertinents pour la surveillance de la qualité de l'eau et elles peuvent être mesurées par analyse satellitaire. Les formules incluses dans l'outil MAGO ont été sélectionnées sur la base des critères suivants : Elles ont été développées pour les masses d'eau intérieures, spécifiquement pour la zone méditerranéenne. Elles ont été validées par comparaison entre les données satellitaires et in situ. Les données satellitaires ont fourni une bonne corrélation avec les mesures in situ.
-</détails>
+</details>
 
 ### Limites
 
