@@ -1,58 +1,57 @@
+# **Description générale**
+L'outil de surveillance de la qualité de l'eau MAGO est un code permettant d'estimer les paramètres de qualité de l'eau dans les lacs, les réservoirs ou les grands étangs à partir d'images Sentinel-2. L'utilisateur peut visualiser les paramètres de qualité de l'eau (chlorophylle-a, cyanotoxines, turbidité...) sur la carte EO Browser et obtenir les séries temporelles correspondantes aux points ou zones sélectionnés. Vous pouvez avoir plus d'informations et accéder au navigateur EO à ce lien : https://www.sentinel-hub.com/explore/eobrowser/
 
-# **General description**
-MAGO Water Quality Monitoring tool is a code to estimates water quality parameters in lakes, reservoir or large ponds from Sentinel-2 images. The user can visualize water quality parameters (chlorophyll-a, cyanotoxins, turbidity...) on the EO Browser map  and get the corresponding time series at selected points or areas. You can have more information and access the EO Browser at this link: https://www.sentinel-hub.com/explore/eobrowser/
-
-## Visuals
-The following is the display that can be obtained for concentration of Chrlorophyll-a for the day 2022-01-30 at Barrage Lebna (Tunisia)
-- Configuration of variables:
+## Visuels
+Voici l'affichage qui peut être obtenu pour la concentration de chlorophylle-a pour la journée 2022-01-30 au Barrage Lebna (Tunisie)
+- Paramétrage des variables :
         <p align="center">
                 <img src="docs/img/custom_script_index_selection_jan_22.png" width="600">
         </p>
-- Map visualization
+- Visualisation de la carte
         <!-- ![alt text](docs/img/map_visualization.png "Map visualization") -->
         <p align="center">
                 <img src="docs/img/viz_jan_22.png" width="600">
         </p>
 
-- Time series plot
+- Tracé de série temporelles
         <!-- ![alt text](docs/img/time_series_plot.png "Time series plot") -->
         <p align="center">
                 <img src="docs/img/plot_jan_22.png" width="600">
         </p>
 
-## Script description
+## Description du script
 
-The following lines will describe relevant aspects of the **MAGO Water Quality Monitoring Tool** code.
+Les lignes suivantes décriront les aspects pertinents du code **MAGO Water Quality Monitoring Tool**.
 
-### index Number
+### index Number (selection de la variable à visualiser)
 
-The user chooses one of the indicators to be visualized (each indicator has an ID number). Indicators are described in the Scientific Background section below. In order to make this selection, the user must modify the value of the following variable:
+L'utilisateur choisit l'un des indicateurs à visualiser (chaque indicateur a un numéro d'identification). Les indicateurs sont décrits dans la section Contexte scientifique ci-dessous. Pour effectuer cette sélection, l'utilisateur doit modifier la valeur de la variable suivante :
 
 ```
 var indexNumber = 0;
 ```
 
-### Color scale
+### Color scale (échelle de couleurs)
 
-<span dir="">By modifying the min/max values of the script it is possible to adjust the numerical thresholds to fit the visualization to the current conditions.</span> Only the following two lines need to be modified:
+<span dir="">En modifiant les valeurs min/max du script, il est possible d'ajuster les seuils numériques pour adapter la visualisation aux conditions actuelles.</span> Seules les deux lignes suivantes doivent être modifiées :
 
 ```
 var minValue = 0; 
 var maxValue = 30;
 ```
 
-<span dir="">More in detail</span>:
+<span dir="">Plus en détail</span>:
 
-* **<span dir="">minValue</span>**: <span dir="">decrease this for more sensitivity to low concentrations of the selected index.</span>
-* **<span dir="">maxValue</span>**<span dir="">: increase this for more sensitivity to high concentrations of the selected index.</span>
+* **<span dir="">minValue</span>** : <span dir="">diminuez cette valeur pour plus de sensibilité aux faibles concentrations de l'indice sélectionné.</span>
+* **<span dir="">maxValue</span>**<span dir=""> : augmentez cette valeur pour une plus grande sensibilité aux concentrations élevées de l'indice sélectionné.</span>
         <p align="center">
                 <img src="docs/img/Description_1_scale.png" width="500">
         </p>
 
 ```
 var scaleLimits = [minValue, (maxValue + 3*minValue)/4, (maxValue + minValue)/2, (3*maxValue + minValue)/4, maxValue]
-var s = 255; // Values range from 0 to 255 for every color channel
-var colorScale =  // Define the RGB colors for each border
+var s = 255; // Les valeurs vont de 0 à 255 pour chaque canal de couleur
+var colorScale =  // Définit les couleurs RGB pour chaque transition de couleur
   [
    [0/s, 0/s, 255/s], // Blue
    [0/s, 255/s, 255/s], // Cyan
@@ -62,100 +61,90 @@ var colorScale =  // Define the RGB colors for each border
   ];
 ```
 
-### Pixel filtering
+### Pixel filtering (Filtrage des pixels)
 
-#### Filter by NDWI
+#### Filter by NDWI (Filtrer par NDWI)
 
-We made a first filter by **NDWI** (<span dir="">Normalized Difference Water Index</span>) in order to differentiate the pixels with water from those without. <span dir="">If the NDWI is lower than 0 it is not water, so all pixels identified as "no water" will be shown in true color.</span>
+Nous avons fait un premier filtre par **NDWI** (<span dir="">Normalized Difference Water Index</span>) afin de différencier les pixels avec de l'eau de ceux sans. <span dir="">Si le NDWI est inférieur à 0, ce n'est pas de l'eau, donc tous les pixels identifiés comme "pas d'eau" seront affichés en vraie couleur.</span>
 
 ```
 if (NDWI < -0) { // If NDWI is lower than 0 is not water, so return  true color
   imgVals = [...TrueColor, samples.dataMask];
 ```
 
-#### Filter by clouds and other elements
+#### Filter by clouds and other elements (Filtrer les nuages et autres éléments)
 
-The purpose is to be able to make a subsequent filtering by removing the pixels containing clouds and other elements, like snow. This is achieved by the following function that use the SCL results:
+Le but est de pouvoir faire un filtrage ultérieur en supprimant les pixels contenant des nuages et d'autres éléments, comme la neige. Ceci est réalisé par la fonction suivante qui utilise les résultats SCL :
 
 ```
 function isCloud(scl)
 ```
 
 
-<span dir="">Scene Classification Map (SCL) aims at providing a pixel classification map, with values from 0 to 11. The labels can be seen in the table below.</span>
+<span dir="">Scene Classification Map (SCL) vise à fournir une carte de classification des pixels, avec des valeurs de 0 à 11. Les étiquettes peuvent être vues dans le tableau ci-dessous.</span>
         <p align="center">
                 <img src="docs/img/Description_2_codes.png" width="250">
         </p>
-<span dir="">Based on this classification, the function will evaluate every pixel and return true for labels 1, 3, 8, 9, 10 and 11.</span> <span dir="">This will allo</span>w images with a high percentage of pixels considered as cloudy or defective to be disregarded in the time series plot display.
+<span dir="">Sur la base de cette classification, la fonction évaluera chaque pixel et renverra vrai pour les étiquettes 1, 3, 8, 9, 10 et 11.</span> <span dir="">Cela permettra< /span>w images avec un pourcentage élevé de pixels considérés comme troubles ou défectueux à ignorer dans l'affichage du tracé de la série temporelle.
         <p align="center">
                 <img src="docs/img/Description_3_filtering.png" width="900">
         </p>
         
-## Scientific Background
+## Contexte scientifique
 ### Introduction
 
-<span dir="">Satellite-based water quality monitoring have been applied for many years and are supported by the different absortion and reflectance of the sun light by the water components. For exemple, algae pigment chlorophyll-a reflects the green spectral band (between 530-590 nm) but absorb red band (between 640-670 nm).</span>
+<span dir="">La surveillance de la qualité de l'eau par satellite est appliquée depuis de nombreuses années et est soutenue par les différentes absorptions et réflexions de la lumière solaire par les composants de l'eau. Par exemple, le pigment d'algue chlorophylle-a reflète la bande spectrale verte (entre 530 et 590 nm) mais absorbe la bande rouge (entre 640 et 670 nm).</span>
 
-Sentinel 2 offers a greater frequency in the measurement than previous satellite missions providing regular analysis every 5 days. It is equipped with a Multi-Spectral Instrument (MSI) providing high resolution images that allow measuring Earth's reflections on 13 different spectral bands including Near Infrared (NIR) and Short Wave Infrared (SWIR).
+Sentinel 2 offre une plus grande fréquence de mesure que les missions satellites précédentes fournissant une analyse régulière tous les 5 jours. Il est équipé d'un instrument multispectral (MSI) fournissant des images haute résolution qui permettent de mesurer les réflexions de la Terre sur 13 bandes spectrales différentes, dont le proche infrarouge (NIR) et l'infrarouge à ondes courtes (SWIR).
 
-### Description of the water quality parameters calculated
+### Description des paramètres de qualité de l'eau calculés
 
-The MAGO water quality monitoring tool aims at integrating different water quality parameters calculated by using the formulas listed in the table below - listed by **Index Number** from 0 to 7.
+L'outil de surveillance de la qualité de l'eau MAGO vise à intégrer différents paramètres de qualité de l'eau calculés à l'aide des formules répertoriées dans le tableau ci-dessous - répertoriés par **numéro d'index** de 0 à 7.
         <p align="center">
                 <img src="docs/img/Description_4_index.png" width="1000">
         </p>
-For Index with ID Number 3 the formula shown in the table is not correct. The correct formula would be equal to "1000 x 115530.31 x ((B03xB04)/B02)^2.38" so in that case units are cells/mL.
+Pour l'index avec le numéro d'identification 3, la formule indiquée dans le tableau n'est pas correcte. La formule correcte serait égale à "1000 x 115530.31 x ((B03xB04)/B02)^2.38" donc dans ce cas les unités sont des cellules/mL.
 
-The MAGO Water Quality Monitoring Tool was focused on chlorophyll-a and cyanobacteria analysis, as well as some physicochemical parameters were included. A brief explanation of the algorithms selected is the following:
+L'outil de surveillance de la qualité de l'eau MAGO était axé sur l'analyse de la chlorophylle-a et des cyanobactéries, ainsi que sur certains paramètres physicochimiques. Une brève explication des algorithmes sélectionnés est la suivante :
 
-<details>
-<summary>Chlorophyll-a</summary>
-For the measurement of this parameter in the MAGO tool we selected three different formulas.
+<détails>
+<summary>Chlorophylle-a</summary>
+Pour la mesure de ce paramètre dans l'outil MAGO, nous avons sélectionné trois formules différentes.
 
-**NDCI developed by Mishra et al. 2012 and adapted to the S2-MSI satellite** is one of the most commonly used index. Despite it has been developed for coastal areas its application to other water bodies has been carried out with successful results.
+**NDCI développé par Mishra et al. 2012 et adapté au satellite S2-MSI** est l'un des indices les plus couramment utilisés. Bien qu'il ait été développé pour les zones côtières, son application à d'autres masses d'eau a été réalisée avec succès.
 
-**Chlorophyll-a high values (Soria-Perpinyà 2021)** this formula has been optimized for its application to inland water bodies from the Mediterranean zone, so it can be more specific for this type of water than NDCI.
+**Chlorophylle-a hautes valeurs (Soria-Perpinyà 2021)** cette formule a été optimisée pour son application aux masses d'eau intérieures de la zone méditerranéenne, elle peut donc être plus spécifique pour ce type d'eau que le NDCI.
 
-**Chlorophyll-a low values also optimized by Soria-Perpinyà 2021** has been applied in Mediterranean inland waters with low concentrations of Chl-a which can be more challenge to detect, so it is applicable in those situations were low concentrations of Chl-a are expected.
+**De faibles valeurs de chlorophylle-a également optimisées par Soria-Perpinyà 2021** ont été appliquées dans les eaux intérieures méditerranéennes avec de faibles concentrations de Chl-a qui peuvent être plus difficiles à détecter, elles sont donc applicables dans les situations où de faibles concentrations de Chl -a sont attendus.
 
-</details>
+</détails>
 
-<details>
-<summary>Cyanobacteria</summary>
-For the determination of Phycocyanin as a proxy of cyanobacteria occurrence two index were included in the MAGO tool.
+<détails>
+<summary>Paramètres physicochimiques</summary>
+ Trois paramètres physicochimiques ont été inclus dans l'outil de surveillance de la qualité de l'eau MAGO, tels que la turbidité, la matière organique dissoute colorée (cDOM) et le total des solides en suspension (TSS). Ces paramètres ont été sélectionnés car ils sont parmi les plus pertinents pour la surveillance de la qualité de l'eau et elles peuvent être mesurées par analyse satellitaire. Les formules incluses dans l'outil MAGO ont été sélectionnées sur la base des critères suivants : Elles ont été développées pour les masses d'eau intérieures, spécifiquement pour la zone méditerranéenne. Elles ont été validées par comparaison entre les données satellitaires et in situ. Les données satellitaires ont fourni une bonne corrélation avec les mesures in situ.
+</détails>
 
-Both indices were developed for its application to inland water bodies. **Potes et al. 2018** showed good results in a preliminary test (see example of application section). Besides, **Soria-Perpinyà 2021** formula was included as it provides a broader range of phycocyanin concentration (this later formula is similar to Chlorophyll-a high values (Soria-Perpinyà 2021) since it is based on the correlation between Chl-a concentration and cyanobacteria concentration)
-
-</details>
-
-<details>
-<summary>Physicochemical parameters</summary>
- Three physicochemical parameters were included in the MAGO Water Quality Monitoring Tool, such as, Turbidity, Colored Dissolved Organic Matter (cDOM) and Total Suspended Solids (TSS).These parameters were selected as they are some of the most relevant for water quality monitoring and they can be measured through satellite analysis.The formulas included in the MAGO Tool were selected based on the following criteria:They were developed for inland water bodies, specifically for the Mediterranean zone.They were validated through comparison between satellite and in-situ data.Satellite data provided good correlation with in-situ measurements.
-</details>
-
-### Limitations
+### Limites
 
 <div>
 
-Satellite-based estimation of water parameters are dependent on the reflectance of the sun light by the water components.
+L'estimation par satellite des paramètres de l'eau dépend de la réflectance de la lumière solaire par les composants de l'eau.
 
-This suffers from several limitations:
+Celui-ci souffre de plusieurs limitations :
 
-- sun light is only reflected from the **top water layer** (e.g. first 50cm) so no information are provided on lower layer (this has some importance in the case of stratified water or moving elements such as some cyanobacteria); some investigation are being developed to get more information deeper in the water column but no operative advances are expected in the next years.
-- the reflectance may be influenced by the **atmospheric composition** (e.g. water vapour, aerosol...) - some corrections are applied in the raw data but the standard correction used for Sentinel data (Sen2Cor) is not optimal for water surfaces (that reflect only very few sun light) - this may lead to error in measurement and introduce some outlier in time series analysis (even if cloud filter are applied); different alternative atmospheric correction more adapted to water surfaces are already available (but they are not used yet in platform such as the Sentinel Hub EO Browser).
-- measurements are taken at **specific times** (e.g. 11am), constant for one satellite and region – this might be important for some variables that can vary during the day; the exact time of the satellite images can be check in the platform such as the Sentinel Hub EO Browser)
-- obviously the reflectance is influenced by the **water composition** and if there is a mix of components, this difficults the estimation of each of them; an example could be a very muddy water (high turbidity) with also a high algal content (high chlorophyll-a).
+- la lumière du soleil n'est réfléchie que par la **couche d'eau supérieure** (par exemple, les premiers 50 cm), de sorte qu'aucune information n'est fournie sur la couche inférieure (cela a une certaine importance dans le cas d'eau stratifiée ou d'éléments en mouvement tels que certaines cyanobactéries) ; certaines recherches sont en cours de développement pour obtenir plus d'informations plus profondément dans la colonne d'eau, mais aucune avancée opérationnelle n'est attendue dans les prochaines années.
+- la réflectance peut être influencée par la **composition atmosphérique** (e.g. vapeur d'eau, aérosol...) - certaines corrections sont appliquées dans les données brutes mais la correction standard utilisée pour les données Sentinel (Sen2Cor) n'est pas optimale pour les surfaces d'eau (qui ne reflètent que très peu de lumière solaire) - cela peut entraîner des erreurs de mesure et introduire des valeurs aberrantes dans l'analyse des séries chronologiques (même si un filtre nuage est appliqué) ; différentes corrections atmosphériques alternatives plus adaptées aux surfaces d'eau sont déjà disponibles (mais elles ne sont pas encore utilisées dans des plateformes telles que le Sentinel Hub EO Browser).
+- les mesures sont prises à des **heures précises** (par exemple 11h), constantes pour un satellite et une région - cela peut être important pour certaines variables qui peuvent varier au cours de la journée ; l'heure exacte des images satellites peut être vérifiée dans la plate-forme telle que le navigateur Sentinel Hub EO)
+- évidemment la réflectance est influencée par la **composition de l'eau** et s'il y a un mélange de composants, cela rend difficile l'estimation de chacun d'eux ; un exemple pourrait être une eau très boueuse (haute turbidité) avec également une forte teneur en algues (haute teneur en chlorophylle-a).
 
 
-# **References**
+## Utilisation des scripts précédents
+Le script lui-même a été écrit en Java Script en utilisant comme base d'autres scripts ouverts tels que :
+- Ulyssys Water Quality Viewer (UWQV) disponible sur https://custom-scripts.sentinel-hub.com/sentinel-2/ulyssys_water_quality_viewer/
+- Se2WaQ - Script de qualité de l'eau Sentinel-2 disponible sur https://custom-scripts.sentinel-hub.com/sentinel-2/se2waq/
+- Code de modèle d'indice de végétation à différence normalisée disponible sur https://custom-scripts.sentinel-hub.com/custom-scripts/sentinel-2/ndvi/
 
-## Use of previous scripts
-The script itself has been written in Java Script by using as a basis other open scripts such as:
--  Ulyssys Water Quality Viewer (UWQV) available at https://custom-scripts.sentinel-hub.com/sentinel-2/ulyssys_water_quality_viewer/
--  Se2WaQ - Sentinel-2 Water Quality Script available at https://custom-scripts.sentinel-hub.com/sentinel-2/se2waq/
--  Normalized difference vegetation index template code available at https://custom-scripts.sentinel-hub.com/custom-scripts/sentinel-2/ndvi/
-
-## Scientific references
+## Références scientifiques
 
 - Mishra, S., Mishra, D.R., 2012. Normalized difference chlorophyll index: A novel model for remote estimation of chlorophyll-a concentration in turbid productive waters. Remote Sens. Environ. 117, 394–406. https://doi.org/10.1016/j.rse.2011.10.016
 
@@ -165,12 +154,12 @@ The script itself has been written in Java Script by using as a basis other open
 
 - Zhan, Y., Delegido, J., Erena, M., Soria, J.M., Ruiz-Verdú, A., Urrego, P., Sòria-Perpinyà, X., Vicente, E., Moreno, J., 2022. Mar Menor lagoon (SE Spain) chlorophyll-a and turbidity estimation with Sentinel-2. Limnetica 41, 1. https://doi.org/10.23818/limn.41.18
 
-## Acknowledgment
-This project is part of the PRIMA programme supported by the European Union
+## Reconnaissance
+Ce projet fait partie du programme PRIMA soutenu par l'Union Européenne
 
 
-## License
-This work is licensed under CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0/ 
-If needed, please cite as "MAGO Water Quality Monitoring Tool, open code for EO Browser developed within the PRIMA MAGO Project by CETAQUA"
+## Licence
+Ce travail est sous licence CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0/
+Si nécessaire, veuillez citer comme « Outil de surveillance de la qualité de l'eau MAGO, code ouvert pour le navigateur EO développé dans le cadre du projet PRIMA MAGO par CETAQUA »
 
 
