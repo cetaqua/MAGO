@@ -3,7 +3,7 @@ L'outil de surveillance de la qualité de l'eau MAGO est un code permettant d'es
 
 ## Visuels
 Voici l'affichage qui peut être obtenu pour la concentration de chlorophylle-a au Barrage Lebna (Tunisie)
-Direct lien ver Sentinel EO Browser avec code chargé pour Tunisie (Lebna):[https://apps.sentinel-hub.com/eo-browser/](https://rb.gy/jbngvb).
+Direct lien ver Sentinel EO Browser avec code chargé pour Tunisie (Lebna):[https://apps.sentinel-hub.com/eo-browser/](https://acortar.link/MT7AQJ).
 
 - Paramétrage des variables :
         <p align="center">
