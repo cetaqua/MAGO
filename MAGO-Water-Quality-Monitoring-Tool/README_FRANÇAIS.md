@@ -2,7 +2,9 @@
 L'outil de surveillance de la qualité de l'eau MAGO est un code permettant d'estimer les paramètres de qualité de l'eau dans les lacs, les réservoirs ou les grands étangs à partir d'images Sentinel-2. L'utilisateur peut visualiser les paramètres de qualité de l'eau (chlorophylle-a, cyanotoxines, turbidité...) sur la carte EO Browser et obtenir les séries temporelles correspondantes aux points ou zones sélectionnés. Vous pouvez avoir plus d'informations et accéder au navigateur EO à ce lien : https://www.sentinel-hub.com/explore/eobrowser/
 
 ## Visuels
-Voici l'affichage qui peut être obtenu pour la concentration de chlorophylle-a pour la journée 2022-01-30 au Barrage Lebna (Tunisie)
+Voici l'affichage qui peut être obtenu pour la concentration de chlorophylle-a au Barrage Lebna (Tunisie)
+Direct lien ver Sentinel EO Browser avec code chargé pour Tunisie (Lebna):[https://apps.sentinel-hub.com/eo-browser/](https://rb.gy/jbngvb).
+
 - Paramétrage des variables :
         <p align="center">
                 <img src="docs/img/custom_script_index_selection_jan_22.png" width="600">
