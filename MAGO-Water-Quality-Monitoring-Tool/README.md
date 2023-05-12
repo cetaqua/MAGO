@@ -171,5 +171,5 @@ This project is part of the PRIMA programme supported by the European Union
 
 ## License
 This work is licensed under CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0/ 
-If needed, please cite as "MAGO Water Quality Monitoring Tool, open code for EO Browser developed within the PRIMA MAGO Project by CETAQUA"
+Please cite as "MAGO Water Quality Monitoring Tool, open code for EO Browser developed within the PRIMA MAGO Project by CETAQUA"
 
